@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="DeepDives.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DeepDives"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:DeepDives.Models"
+    mc:Ignorable="d"
+    >
+    <Window.SystemBackdrop>
+        <MicaBackdrop Kind="BaseAlt" />
+    </Window.SystemBackdrop>
+    <TabView Name="TabMain"
+             CanDragTabs="False"
+             CanReorderTabs="False"
+             Loaded="TabMain_Loaded"
+             IsAddTabButtonVisible="False"
+             MaxWidth="650"
+             >
+        <TabView.TabStripHeader>
+            <Grid Background="Transparent">
+                <Image Source="/Assets/Square44x44Logo.targetsize-24_altform-unplated.png" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None" />
+            </Grid>
+        </TabView.TabStripHeader>
+        <TabView.TabStripFooter>
+            <Grid x:Name="CustomDragRegion" MinWidth="188" />
+        </TabView.TabStripFooter>
+        <TabView.TabItemTemplate>
+            <DataTemplate x:DataType="models:DeepDiveViewModel">
+                <TabViewItem Header="{x:Bind Type}"
+                             IsClosable="False">
+                    <Grid Width="600">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" CornerRadius="8" Padding="16" Margin="8">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{x:Bind Name}" Style="{ThemeResource TitleLargeTextBlockStyle}" Grid.Row="0" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{x:Bind Biome}" Style="{ThemeResource SubtitleTextBlockStyle}" Grid.Row="1" HorizontalAlignment="Center"/>
+                            </Grid>
+                            <Border.Background>
+                                <ImageBrush ImageSource="{x:Bind BiomeImage}" Stretch="UniformToFill" Opacity="0.6"/>
+                            </Border.Background>
+                        </Border>
+                        <ItemsRepeater ItemsSource="{x:Bind Stages}" Grid.Row="1" Margin="8" >
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="models:StageViewModel">
+                                    <Grid Margin="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Source="{x:Bind PrimaryIcon}" Width="30px" Height="30px" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="8"/>
+                                        <Image Source="{x:Bind SecondaryIcon}" Width="30px" Height="30px" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="8"/>
+
+                                        <TextBlock Text="{x:Bind Primary}" Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{x:Bind Secondary}" Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+
+                                        <Image Source="{x:Bind WarningIcon}" Width="30px" Height="30px" ToolTipService.ToolTip="{x:Bind Warning}" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="8"/>
+                                        <Image Source="{x:Bind AnomalyIcon}" Width="30px" Height="30px" ToolTipService.ToolTip="{x:Bind Anomaly}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="8"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                            <ItemsRepeater.Layout>
+                                <StackLayout Orientation="Vertical" Spacing="8"/>
+                            </ItemsRepeater.Layout>
+                        </ItemsRepeater>
+                    </Grid>
+                </TabViewItem>
+            </DataTemplate>
+        </TabView.TabItemTemplate>
+    </TabView>
+</Window>
