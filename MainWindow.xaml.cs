@@ -36,7 +36,7 @@ namespace DeepDives
         public MainWindow()
         {
             InitializeComponent();
-            AppWindow.Resize(new(600, 800));
+            AppWindow.Resize(new(500, 700));
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(CustomDragRegion);
             if (AppWindow.Presenter.GetType() == typeof(OverlappedPresenter))
@@ -45,7 +45,7 @@ namespace DeepDives
             }
         }
 
-        static async Task<DRGResponse?> GetDives()
+        static async Task<DRGResponseViewModel?> GetDives()
         {
             HttpClient client = new()
             {
@@ -55,7 +55,7 @@ namespace DeepDives
             try
             {
                 DRGResponse? response = await client.GetFromJsonAsync<DRGResponse>("/v1/deepdives");
-                return response;
+                return new DRGResponseViewModel(response ?? new());
             }
             catch (HttpRequestException ex)
             {
@@ -83,183 +83,148 @@ namespace DeepDives
             }
         }
 
-        private void TabMain_Loaded(object sender, RoutedEventArgs e)
+        private async void TabMain_Loaded(object sender, RoutedEventArgs e)
         {
-            //DRGResponse? Model = await GetDives();
-
-            var viewModel = GetTestData();
-
-            TabMain.TabItemsSource = viewModel.Variants;
+            var response = await GetDives();
+            TabMain.TabItemsSource = response?.Variants;
+            TabMain.SelectedIndex = 0;
         }
 
         private DRGResponseViewModel GetTestData()
         {
-            List<Stage> stages = new()
-            {
-                new()
-                {
-                    Primary = "Morkite x150",
-                    Secondary = "Black Box",
-                    Anomaly = "Critical Weakness",
-                    Warning = "Cave Leech Cluster",
-                },
-                new()
-                {
-                    Primary = "Eggs x6",
-                    Secondary = "Dreadnought x2 (D+T)",
-                    Anomaly = "Double XP",
-                    Warning = "Elite Threat",
-                },
-                new()
-                {
-                    Primary = "Escort Duty",
-                    Secondary = "Aquarqs x10",
-                    Anomaly = "Golden Bugs",
-                    Warning = "Exploder Infestation",
-                },
-                new()
-                {
-                    Primary = "On-Site Refining",
-                    Secondary = "Industrial Sabotage",
-                    Anomaly = "Gold Rush",
-                    Warning = "Haunted Cave",
-                },
-                new()
-                {
-                    Primary = "Mule",
-                    Secondary = "Undefined Type",
-                    Anomaly = "Low Gravity",
-                    Warning = "Lethal Enemies",
-                },
-                new()
-                {
-                    Primary = "Undefined Type",
-                    Secondary = "Undefined Type",
-                    Anomaly = "Mineral Mania",
-                    Warning = "Lithophage Outbreak",
-                },
-                new()
-                {
-                    Primary = "Undefined Type",
-                    Secondary = "Undefined Type",
-                    Anomaly = "Rich Atmosphere",
-                    Warning = "Low Oxygen",
-                },
-                new()
-                {
-                    Anomaly = "Volatile Guts",
-                    Warning = "Mactera Plague",
-                },
-                new()
-                {
-                    Warning = "Parasites",
-                },
-                new()
-                {
-                    Warning = "Regenerative Bugs",
-                },
-                new()
-                {
-                    Warning = "Rival Presence",
-                },
-                new()
-                {
-                    Warning = "Shield Disruption",
-                },
-                new()
-                {
-                    Warning = "Swarmageddon",
-                },
-                new()
-                {
-                    Primary = "No Warning",
-                },
-            };
-
-            List<DeepDive> dives = new()
-            {
-                new() {
-                   Type = "Deep Dive",
-                   Name = "Hunter's Nightmare",
-                   Biome = "Azure Weald",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Elite Deep Dive",
-                   Name = "Nathan's Sandwich",
-                   Biome = "Crystalline Caverns",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Eliter Deep Dive",
-                   Name = "A Pity.",
-                   Biome = "Dense Biozone",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Elitest Dive",
-                   Name = "MUSHROOM",
-                   Biome = "Fungus Bogs",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Eliteerest Deep Dive",
-                   Name = "Sam's House",
-                   Biome = "Glacial Strata",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "More Eliterest Deep Dive",
-                   Name = "A Pity.",
-                   Biome = "Hollow Bough",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Most Eliterest Deep Dive",
-                   Name = "Instant Death",
-                   Biome = "Magma Core",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Mostest Eliteerst Dive",
-                   Name = "Fat Boy",
-                   Biome = "Radioactive Exclusion Zone",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Mosterest Eliteerest Deep Dive",
-                   Name = "Evelyn's Disaster",
-                   Biome = "Salt Pits",
-                   Stages = GetTestMissions(stages),
-                },
-                new() {
-                   Type = "Karl's Dive",
-                   Name = "The Pharaoh's Curse",
-                   Biome = "Sandblasted Corridors",
-                   Stages = GetTestMissions(stages),
-                },
-            };
-
             var response = new DRGResponse()
             {
                 StartTime = "Now!",
                 EndTime = "Later!",
-                Variants = dives,
+                Variants = new()
+                {
+                    { GetRandomDive() },
+                    { GetRandomDive() },
+                }
             };
-
+            
             return new DRGResponseViewModel(response);
         }
 
-        private List<Stage> GetTestMissions(List<Stage> pool)
+        private DeepDive GetRandomDive()
         {
-            List<Stage> result = new List<Stage>();
-            int size = pool.Count - 1;
-            var rng = new Random();
-            result.Add(pool[rng.Next(0, size)]);
-            result.Add(pool[rng.Next(0, size)]);
-            result.Add(pool[rng.Next(0, size)]);
+            return new DeepDive()
+            {
+                Type = "Example Deep Dive",
+                Biome = GetRandomBiome(),
+                Name = GetRandomName(),
+                Stages = new()
+                {
+                    { GetRandomStage() },
+                    { GetRandomStage() },
+                    { GetRandomStage() },
+                }
+            };
+        }
 
-            return result;
+        private string GetRandomName()
+        {
+            var rng = new Random();
+            return rng.Next(5) switch
+            {
+                0 => "Hunter's Nightmare",
+                1 => "Nathan's Sandwich",
+                2 => "Evelyn's Plight",
+                3 => "Karl's Wet Dream",
+                4 => "The Death of Sam",
+                _ => "Nathan calls this one the sandwich."
+            };
+        }
+
+        private Stage GetRandomStage()
+        {
+            return new Stage()
+            {
+                Primary = GetRandomMissionType(),
+                Secondary = GetRandomMissionType(),
+                Warning = GetRandomWarning(),
+                Anomaly = GetRandomAnomaly(),
+            };
+        }
+        
+        private string GetRandomBiome()
+        {
+            var rng = new Random();
+            return rng.Next(10) switch
+            {
+                0 => "Crystalline Caverns",
+                1 => "Salt Pits",
+                2 => "Fungus Bogs",
+                3 => "Radioactive Exclusion Zone",
+                4 => "Dense Biozone",
+                5 => "Glacial Strata",
+                6 => "Hollow Bough",
+                7 => "Azure Weald",
+                8 => "Magma Core",
+                9 => "Sandblasted Corridors",
+                _ => "God has forsaken us, the RNG generated a value greater than 9. Intellisense is in shambles."
+            };
+        }
+        private string GetRandomMissionType()
+        {
+            var rng = new Random();
+            return rng.Next(9) switch
+            {
+                0 => "Black Box",
+                1 => "Egg x100",
+                2 => "Dreadnought x450 (Bruh)",
+                3 => "Escort Duty",
+                4 => "Morkite x999",
+                5 => "On-Site Refining",
+                6 => "Industrial Sabotage",
+                7 => "Mule xMorbillion",
+                8 => "Aquarq xToo Many",
+                _ => "The end is nigh. The RNG generated a value greater than 8."
+            };
+        }
+        private string GetRandomWarning()
+        {
+            var rng = new Random();
+            return rng.Next(13) switch
+            {
+                0 => "Cave Leech Cluster",
+                1 => "Elite Threat",
+                2 => "Haunted Cave",
+                3 => "Lethal Enemies",
+                4 => "Low Oxygen",
+                5 => "Mactera Plague",
+                6 => "Parasites",
+                7 => "Regenerative Bugs",
+                8 => "Rival Presence",
+                9 => "Shield Disruption",
+                10 => "Swarmageddon",
+                11 => "Lithophage Outbreak",
+                12 => "Exploder Infestation",
+                _ => "The value was greater than 12. Bill Gates shudders at the possibility"
+            };
+        }
+        private string GetRandomAnomaly()
+        {
+            var rng = new Random();
+            return rng.Next(8) switch
+            {
+                0 => "Critical Weakness",
+                1 => "Double XP",
+                2 => "Gold Rush",
+                3 => "Low Gravity",
+                4 => "Mineral Mania",
+                5 => "Rich Atmosphere",
+                6 => "Volatile Guts",
+                7 => "Golden Bugs",
+                _ => "The value was greater than 7. Clearly, a cosmic ray caused a bit shift."
+            };
+        }
+
+        private async void RefreshItem(object sender, RoutedEventArgs e)
+        {
+            var response = await GetDives();
+            TabMain.TabItemsSource = response?.Variants;
+            TabMain.SelectedIndex = 0;
         }
     }
 }

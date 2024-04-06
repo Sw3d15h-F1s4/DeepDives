@@ -84,7 +84,7 @@ namespace DeepDives.Models
                 "Mactera Plague" => "/Assets/WarningIcons/MacteraPlague.png",
                 "Parasites" => "/Assets/WarningIcons/Parasites.png",
                 "Regenerative Bugs" => "/Assets/WarningIcons/RegenerativeBugs.png",
-                "Rival Presence" => "/Assets/WarningIcons/Rival Presence.png",
+                "Rival Presence" => "/Assets/WarningIcons/RivalPresence.png",
                 "Shield Disruption" => "/Assets/WarningIcons/ShieldDisruption.png",
                 "Swarmageddon" => "/Assets/WarningIcons/Swarmageddon.png",
                 "Lithophage Outbreak" => "/Assets/WarningIcons/LithophageOutbreak.png",
@@ -110,19 +110,31 @@ namespace DeepDives.Models
 
         public Visibility WarningIconVisibility
         {
-            get => Warning switch
+            get
             {
-                "" => Visibility.Collapsed,
-                _ => Visibility.Visible,
-            };
+                if (string.IsNullOrEmpty(Warning))
+                {
+                    return Visibility.Collapsed;
+                }
+                else
+                {
+                    return Visibility.Visible;
+                }
+            }
         }
         public Visibility AnomalyIconVisibility
         {
-            get => Anomaly switch
+            get
             {
-                "" => Visibility.Collapsed,
-                _ => Visibility.Visible,
-            };
+                if (string.IsNullOrEmpty(Anomaly))
+                {
+                    return Visibility.Collapsed;
+                }
+                else
+                {
+                    return Visibility.Visible;
+                }
+            }
         }
 
         // Allowed Values:
