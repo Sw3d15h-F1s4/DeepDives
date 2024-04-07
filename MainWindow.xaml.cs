@@ -1,30 +1,11 @@
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Net;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using System.Net.Http;
-using Windows.Security.Cryptography.Core;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
 using System.Net.Http.Json;
 using DeepDives.Models;
 using System.Diagnostics;
 using System.Text.Json;
-using Microsoft.UI.Windowing;
-using WinRT;
-using System.Runtime.InteropServices;
-using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
