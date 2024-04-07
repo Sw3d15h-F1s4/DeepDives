@@ -22,6 +22,9 @@ using DeepDives.Models;
 using System.Diagnostics;
 using System.Text.Json;
 using Microsoft.UI.Windowing;
+using WinRT;
+using System.Runtime.InteropServices;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,13 +39,9 @@ namespace DeepDives
         public MainWindow()
         {
             InitializeComponent();
-            AppWindow.Resize(new(500, 700));
+            this.AppWindow.Resize(new(500, 700));
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(CustomDragRegion);
-            if (AppWindow.Presenter.GetType() == typeof(OverlappedPresenter))
-            {
-                (AppWindow.Presenter as OverlappedPresenter).IsResizable = false;
-            }
         }
 
         static async Task<DRGResponseViewModel?> GetDives()
@@ -85,6 +84,9 @@ namespace DeepDives
 
         private async void TabMain_Loaded(object sender, RoutedEventArgs e)
         {
+            // :clown: imagine having a ui framework that can't resize windows :clown: :clown:
+            var scale = this.Content.XamlRoot.RasterizationScale;
+            this.AppWindow.Resize(new(Convert.ToInt32(500 * scale), Convert.ToInt32(700 * scale)));
             var response = await GetDives();
             TabMain.TabItemsSource = response?.Variants;
             TabMain.SelectedIndex = 0;

@@ -57,34 +57,36 @@
                                 <ImageBrush ImageSource="{x:Bind BiomeImage}" Stretch="UniformToFill" Opacity="0.6"/>
                             </Border.Background>
                         </Border>
-                        <ItemsRepeater ItemsSource="{x:Bind Stages}" Grid.Row="2" Margin="8" >
-                            <ItemsRepeater.ItemTemplate>
-                                <DataTemplate x:DataType="models:StageViewModel">
-                                    <Grid Margin="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <Image Source="{x:Bind PrimaryIcon}" Width="30px" Height="30px" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="8"/>
-                                        <Image Source="{x:Bind SecondaryIcon}" Width="30px" Height="30px" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="8"/>
+                        <ScrollView Grid.Row="2">
+                            <ItemsRepeater ItemsSource="{x:Bind Stages}" Margin="8" >
+                                <ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="models:StageViewModel">
+                                        <Grid Margin="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultSolidBrush}" BorderThickness="1" CornerRadius="8" Padding="8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Image Source="{x:Bind PrimaryIcon}" Width="30px" Height="30px" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="8"/>
+                                            <Image Source="{x:Bind SecondaryIcon}" Width="30px" Height="30px" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="8"/>
 
-                                        <TextBlock Text="{x:Bind Primary}" Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{x:Bind Secondary}" Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{x:Bind Primary}" Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{x:Bind Secondary}" Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
 
-                                        <Image Source="{x:Bind WarningIcon}" Width="30px" Height="30px" ToolTipService.ToolTip="{x:Bind Warning}" Visibility="{x:Bind WarningIconVisibility}" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="8"/>
-                                        <Image Source="{x:Bind AnomalyIcon}" Width="30px" Height="30px" ToolTipService.ToolTip="{x:Bind Anomaly}" Visibility="{x:Bind AnomalyIconVisibility}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="8"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsRepeater.ItemTemplate>
-                            <ItemsRepeater.Layout>
-                                <StackLayout Orientation="Vertical" Spacing="8"/>
-                            </ItemsRepeater.Layout>
-                        </ItemsRepeater>
+                                            <Image Source="{x:Bind WarningIcon}" Width="30px" Height="30px" ToolTipService.ToolTip="{x:Bind Warning}" Visibility="{x:Bind WarningIconVisibility}" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="8"/>
+                                            <Image Source="{x:Bind AnomalyIcon}" Width="30px" Height="30px" ToolTipService.ToolTip="{x:Bind Anomaly}" Visibility="{x:Bind AnomalyIconVisibility}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="8"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsRepeater.ItemTemplate>
+                                <ItemsRepeater.Layout>
+                                    <StackLayout Orientation="Vertical" Spacing="8"/>
+                                </ItemsRepeater.Layout>
+                            </ItemsRepeater>
+                        </ScrollView>
                         <Border Height="30" Background="{ThemeResource LayerOnMicaBaseAltFillColorDefaultBrush}" Grid.Row="3">
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="Rock and Stone, miner!" Margin="16,0,0,0" VerticalAlignment="Center"/>
                         </Border>
